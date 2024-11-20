@@ -30,49 +30,49 @@ int main() {
                                         pid5 = fork();
                                         switch (pid5)
                                         {
-                                        case -1: perror("Error en el quinto fork"); exit(-1);
+                                        case -1: perror("Error en el quinto fork"); exit(1);
                                         case 0:
                                                 printf("Soy el numero 42, mi PID es %d\n", getpid());
                                                 pid6 = fork();
                                                 switch (pid6)
                                                 {
-                                                case -1: perror("Error en el sexto fork"); exit(-1);
+                                                case -1: perror("Error en el sexto fork"); exit(1);
                                                 case 0: 
                                                         printf("Soy el numero 46, mi PID es %d\n", getpid());
                                                         pid7 = fork();
                                                         switch (pid7)
                                                         {
-                                                        case -1: perror("Error en el septimo fork"); exit(-1);
+                                                        case -1: perror("Error en el septimo fork"); exit(1);
                                                         case 0:
                                                                 printf("Soy el numero 50, mi PID es %d\n", getpid());
                                                                 pid8 = fork();
                                                                 switch (pid8)
                                                                 {
-                                                                case -1: perror("Error en el octavo fork"); exit(-1);
+                                                                case -1: perror("Error en el octavo fork"); exit(1);
                                                                 case 0:
                                                                         printf("Soy el numero 54, mi PID es %d\n", getpid());
                                                                         pid9 = fork();
                                                                         switch (pid9)
                                                                         {
-                                                                        case -1: perror("Error noveno fork"); exit(-1);
+                                                                        case -1: perror("Error noveno fork"); exit(1);
                                                                         case 0:
                                                                                 printf("Soy el numero 56, mi PID es %d\n", getpid());
                                                                                 pid10 = fork();
                                                                                 switch (pid10)
                                                                                 {
-                                                                                case -1: perror("Error noveno fork"); exit(-1);
+                                                                                case -1: perror("Error noveno fork"); exit(1);
                                                                                 case 0:
                                                                                         printf("Soy el numero 56, mi PID es %d\n", getpid());
                                                                                         pid11 = fork();
                                                                                         switch (pid11)
                                                                                         {
-                                                                                        case -1: perror("Error decimo fork"); exit(-1);
+                                                                                        case -1: perror("Error decimo fork"); exit(1);
                                                                                         case 0:
                                                                                                 printf("Soy el numero 57, mi PID es %d\n", getpid());
                                                                                                 pid12 = fork();
                                                                                                 switch (pid12)
                                                                                                 {
-                                                                                                case -1: perror("Error undecimo fork"); exit(-1);
+                                                                                                case -1: perror("Error undecimo fork"); exit(1);
                                                                                                 case 0:
                                                                                                         printf("Soy el numero 58, mi PID es %d\n", getpid());
                                                                                                         exit(0);
