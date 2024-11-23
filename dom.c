@@ -63,32 +63,44 @@ int main() {
                                                                                                             case -1: perror("Error en el dodiciésimo fork"); exit(1);
                                                                                                             case 0:
                                                                                                                     printf("Soy el numero 58, mi PID es: %d\n", getpid());                                                          //NUMERO 58
-                                                                                                                    pause();
+                                                                                                                    //pause();
                                                                                                                     exit(0);
-                                                                                                            default: printf("Soy el padre numero 57, mi PID es: %d\n\n", getpid());
+                                                                                                            default: 
+                                                                                                                pause();
+                                                                                                            printf("Soy el padre numero 57, mi PID es: %d\n\n", getpid());
                                                                                                         }
-                                                                                                        pause();
+                                                                                                        //pause();
                                                                                                         exit(0);
-                                                                                                default: printf("Soy el padre numero 56, mi PID es: %d\n\n", getpid());
+                                                                                                default: 
+                                                                                                    pause();
+                                                                                                printf("Soy el padre numero 56, mi PID es: %d\n\n", getpid());
                                                                                             }
-                                                                                            pause();
+                                                                                            //pause();
                                                                                             exit(0);
-                                                                                        default: printf("Soy el padre numero 54, mi PID es: %d\n\n", getpid());
+                                                                                        default: 
+                                                                                            pause();
+                                                                                            printf("Soy el padre numero 54, mi PID es: %d\n\n", getpid());
                                                                                     }
 
-                                                                                    pause();
+                                                                                    //pause();
                                                                                     exit(0);
-                                                                                default: printf("Soy el padre numero 50, mi PID es: %d\n\n", getpid());
+                                                                                default: 
+                                                                                    pause();
+                                                                                    printf("Soy el padre numero 50, mi PID es: %d\n\n", getpid());
                                                                             }
-                                                                            pause();
+                                                                            //pause();
                                                                             exit(0);
-                                                                    default: printf("Soy el padre numero 46, mi PID es: %d\n\n", getpid());
+                                                                    default: 
+                                                                        pause();
+                                                                        printf("Soy el padre numero 46, mi PID es: %d\n\n", getpid());
                                                                 }
-                                                                pause();
+                                                                //pause();
                                                                 exit(0);
-                                                        default: printf("Soy el padre numero 42, mi PID es: %d\n\n", getpid());
+                                                        default: 
+                                                            pause();
+                                                        printf("Soy el padre numero 42, mi PID es: %d\n\n", getpid());
                                                     }
-                                                    pause();
+                                                    //pause();
                                                     exit(0);
                                             default: printf("Soy el padre numero 40, mi PID es: %d\n\n", getpid());
                                                     pid6=fork();
@@ -110,26 +122,30 @@ int main() {
                                                                                 exit(1);
                                                                             case 0:
                                                                                 printf("Soy el numero 51, mi PID es %d\n",getpid());                                                  //NUMERO 51
-                                                                                pause();
+                                                                                //pause();
                                                                                 exit(0);
                                                                             default:
+                                                                                pause();
                                                                                 printf("Soy el padre numero 47, mi PID es %d\n\n",getpid());
                                                                         }
-                                                                        pause();
+                                                                        //pause();
                                                                         exit(0);
                                                                     default:
+                                                                        pause();
                                                                         printf("Soy el padre numero 43, mi pid es %d\n\n",getpid());
 
                                                                 }
-                                                                pause();
+                                                                //pause();
                                                                 exit(0);
-                                                        default: printf("Soy el padre numero 40, mi PID es: %d\n\n", getpid());
+                                                        default: 
+                                                            pause();
+                                                        printf("Soy el padre numero 40, mi PID es: %d\n\n", getpid());
                                                                 exit(0);
                                                     }
                                                     pause();
                                                     exit(0);
                                         }
-                                        pause();
+                                        //pause();
                                         exit(0);
                                 default: 
                                     printf("Soy el padre numero 39, mi PID es: %d\n", getpid());
@@ -156,22 +172,24 @@ int main() {
                                                                                         case -1: perror("Error en el fork veintitres"); exit(1); 
                                                                                         case 0: 
                                                                                             printf("Soy el numero 55, mi PID es %d\n",getpid());                                                  //NUMERO 55
-                                                                                            pause();
+                                                                                            //pause();
                                                                                             exit(0);
                                                                                         default: 
                                                                                             printf("Soy el padre numero 52, mi PID es %d\n\n",getpid());
                                                                                     }
-                                                                                    pause();
+                                                                                    //pause();
                                                                                     exit(0);
                                                                                 default:
+                                                                                    pause();
                                                                                     printf("Soy el padre numero 48, mi PID es %d\n\n",getpid());
                                                                             }
-                                                                            pause();
+                                                                            //pause();
                                                                             exit(0);
                                                                     default:
+                                                                            pause();
                                                                             printf("Soy el padre numero 44, mi PID es %d\n\n",getpid());
                                                                 }
-                                                                pause();
+                                                                //pause();
                                                                 exit(0);
                                                         default: 
                                                             printf("Soy el padre numero 41, mi PID es %d\n\n",getpid());
@@ -189,38 +207,45 @@ int main() {
                                                                                     case -1: perror("Error en el fork veintitres"); exit(1);
                                                                                     case 0:
                                                                                         printf("Soy el numero 53, mi PID es %d\n",getpid());
-                                                                                        pause();
+                                                                                        //pause();
                                                                                         exit(0);
                                                                                     default:
+                                                                                        pause();
                                                                                         printf("Soy el padre numero 49, mi PID es %d\n\n",getpid());
                                                                                 }
-                                                                                pause();
+                                                                                //pause();
                                                                                 exit(0);
                                                                             default:
+                                                                                pause();
                                                                                 printf("Soy el padre numero 45, mi PID es %d\n\n",getpid());
                                                                         }
-                                                                        pause();
+                                                                        //pause();
                                                                         exit(0);
                                                                 default:
+                                                                        pause();
                                                                         printf("Soy el padre numero 41, mi PID es %d\n\n",getpid());
                                                             }
                                                     }
-                                                    pause();
+                                                    //pause();
                                                     exit(0);
-                                            default: printf("Soy el padre numero 39, mi PID es: %d\n\n", getpid());
+                                            default: 
+                                            pause();
+                                            printf("Soy el padre numero 39, mi PID es: %d\n\n", getpid());
                                                     exit(0);
                                         }
                                         pause();
-                                        exit(0);
                                          
                             }
-                            pause();
+                            //pause();
                             exit(0);
-                    default: printf("\n"); 
+                    default: 
+                    pause();
+                    printf("\n"); 
                 }
-                pause();
+                //pause();
                 exit(0); 
         default: 
+            pause();
             
             printf("Soy el numero 37, mi PID es: %d\n\n", getpid());                                                             //RAIZ 37
     }
