@@ -4,11 +4,27 @@
 #include <sys/wait.h>  // Necesario para usar wait()
 #include <sys/types.h>
 
-void nonada(int sig){
-
+void manejadora_SIGTERM(int sig){
+    printf("Proceso %d recibió la señal SIGTERM", getpid());
+    exit(0);
+}
+void matar_proceso(pid[i]){
+    printf("Enviando SIGTERM");
+    kill(pid[i], SIGTERM);
 }
 
+
 int main() {
+   //Manejadora de la señal SIGTERM
+   struct sigaction ss;
+   ss.sa_handler=manejadora_SIGTERM;
+   sigemptyset(&ss.sa_mask);
+   ss.ss_flags=0;
+   sigaction=(SIGTERM, &ss; NULL)
+   
+   
+   
+   
     //pid_t pid, pid2, pid3,pid4,pid5,pid6,pid7,pid8,pid9,pid10,pid11,pid12,pid13,pid14,pid15,pid16,pid17,pid18,pid19,pid20;
     pid_t pids[17];
     int i = 0;
@@ -19,60 +35,69 @@ int main() {
         case 0: i++;
                 printf("Soy el numero 38, mi PID es: %d\n", getpid());                                                             //NUMERO38
                 pids[i] = fork();
+                matar_proceso(pid[i]);
                 switch (pids[i]) {
                     
                     case -1: perror("Error en el segundo fork"); exit(1);
                     case 0: i++;
                             printf("Soy el numero 39, mi PID es: %d\n", getpid());                                                             //NUMERO39
                             pids[i] = fork();
+                            matar_proceso(pid[i]);
                             switch (pids[i]) {
                                 
                                 case -1: perror("Error en el tercer fork"); exit(1);
                                 case 0: i++;
                                         printf("Soy el numero 40, mi PID es: %d\n", getpid());                                                             //NUMERO40
                                         pids[i] = fork();
+                                        matar_proceso(pid[i]);
                                         switch (pids[i]) {
                                             
                                             case -1: perror("Error en el quinto fork"); exit(1);
                                             case 0: i++;
                                                     printf("Soy el numero 42, mi PID es: %d\n", getpid());                                                              //NUMERO 42
                                                     pids[i] = fork();
+                                                    matar_proceso(pid[i]);
                                                     switch (pids[i]) {
                                                         
                                                         case -1: perror("Error en el séptimo fork"); exit(1);
                                                         case 0:i++;
                                                                 printf("Soy el numero 46, mi PID es: %d\n", getpid());                                                          //NUMERO 46
                                                                 pids[i] = fork();
+                                                                matar_proceso(pid[i]);
                                                                 switch (pids[i]) {
                                                                     
                                                                     case -1: perror("Error en el octavésimo fork"); exit(1);
                                                                     case 0:i++;
                                                                             printf("Soy el numero 50, mi PID es: %d\n", getpid());                                                          //NUMERO 50
                                                                             pids[i] = fork();
+                                                                            matar_proceso(pid[i]);
                                                                             switch (pids[i]) {
                                                                                 
                                                                                 case -1: perror("Error en el noveno fork"); exit(1);
                                                                                 case 0:i++;
                                                                                     printf("Soy el numero 54, mi PID es: %d\n", getpid());                                                          //NUMERO 54
                                                                                     pids[i] = fork();
+                                                                                    matar_proceso(pid[i]);
                                                                                     switch (pids[i]) {
                                                                                         
                                                                                         case -1: perror("Error en el décimo fork"); exit(1);
                                                                                         case 0:i++;
                                                                                             printf("Soy el numero 56, mi PID es: %d\n", getpid());                                                          //NUMERO 56
                                                                                             pids[i] = fork();
+                                                                                            matar_proceso(pid[i]);
                                                                                             switch (pids[i]) {
                                                                                                 
                                                                                                 case -1: perror("Error en el undécimo fork"); exit(1);
                                                                                                 case 0:i++;
                                                                                                         printf("Soy el numero 57, mi PID es: %d\n", getpid());                                                          //NUMERO 57
                                                                                                         pids[i] = fork();
+                                                                                                        matar_proceso(pid[i]);
                                                                                                         switch (pids[i]) {
                                                                                                             
                                                                                                             case -1: perror("Error en el dodiciésimo fork"); exit(1);
                                                                                                             case 0:i++;
                                                                                                                     printf("Soy el numero 58, mi PID es: %d\n", getpid());                                                          //NUMERO 58
-                                                                                                                      
+                                                                                                                    pause();
                                                                                                                     exit(0);
                                                                                                             default: 
                                                                                                                 pause();
@@ -270,8 +295,10 @@ int main() {
                   
                 exit(0); 
         default: 
-            pause();
-            printf("Soy el numero 37, mi PID es: %d\n\n", getpid());                                                             //RAIZ 37
+            
+            printf("Soy el numero 37, mi PID es: %d\n\n", getpid()); 
+            matar_proceso(pid[i])
+            //RAIZ 37
     }
     return 0;
 }
