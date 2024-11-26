@@ -4,28 +4,24 @@
 #include <sys/wait.h>  // Necesario para usar wait()
 #include <sys/types.h>
 
-void manejadora_SIGTERM(int sig){
+void manejadora(int sig){
     printf("Proceso %d recibió la señal SIGTERM", getpid());
     exit(0);
 }
-void matar_proceso(pid[i]){
-    printf("Enviando SIGTERM");
-    kill(pid[i], SIGTERM);
+
+
+void matar_proceso(pid_t pid) {
+    printf("Enviando SIGTERM al proceso %d\n", pid);
+    kill(pid, SIGTERM);  // Enviar señal SIGTERM al proceso indicado
 }
 
-
 int main() {
-   //Manejadora de la señal SIGTERM
-   struct sigaction ss;
-   ss.sa_handler=manejadora_SIGTERM;
-   sigemptyset(&ss.sa_mask);
-   ss.ss_flags=0;
-   sigaction=(SIGTERM, &ss; NULL)
-   
-   
-   
-   
-    //pid_t pid, pid2, pid3,pid4,pid5,pid6,pid7,pid8,pid9,pid10,pid11,pid12,pid13,pid14,pid15,pid16,pid17,pid18,pid19,pid20;
+
+    struct sigaction ss;
+    ss.sa_handler = manejadora;
+    sigemptyset(&ss.sa_mask);
+    ss.sa_flags = 0;
+    sigaction(SIGTERM, &ss, NULL);
     pid_t pids[17];
     int i = 0;
     pids[i] = fork();
@@ -33,65 +29,69 @@ int main() {
         
         case -1: perror("Error en el primer fork"); exit(1);
         case 0: i++;
+            
                 printf("Soy el numero 38, mi PID es: %d\n", getpid());                                                             //NUMERO38
                 pids[i] = fork();
-                matar_proceso(pid[i]);
+                
                 switch (pids[i]) {
                     
                     case -1: perror("Error en el segundo fork"); exit(1);
                     case 0: i++;
+                            
                             printf("Soy el numero 39, mi PID es: %d\n", getpid());                                                             //NUMERO39
                             pids[i] = fork();
-                            matar_proceso(pid[i]);
+                            
                             switch (pids[i]) {
                                 
                                 case -1: perror("Error en el tercer fork"); exit(1);
-                                case 0: i++;
+                                case 0: 
+                                         
+                                        i++;    
                                         printf("Soy el numero 40, mi PID es: %d\n", getpid());                                                             //NUMERO40
                                         pids[i] = fork();
-                                        matar_proceso(pid[i]);
+                                        
                                         switch (pids[i]) {
                                             
                                             case -1: perror("Error en el quinto fork"); exit(1);
                                             case 0: i++;
                                                     printf("Soy el numero 42, mi PID es: %d\n", getpid());                                                              //NUMERO 42
                                                     pids[i] = fork();
-                                                    matar_proceso(pid[i]);
+                                                    
                                                     switch (pids[i]) {
                                                         
                                                         case -1: perror("Error en el séptimo fork"); exit(1);
                                                         case 0:i++;
                                                                 printf("Soy el numero 46, mi PID es: %d\n", getpid());                                                          //NUMERO 46
                                                                 pids[i] = fork();
-                                                                matar_proceso(pid[i]);
+                                                                
                                                                 switch (pids[i]) {
                                                                     
                                                                     case -1: perror("Error en el octavésimo fork"); exit(1);
                                                                     case 0:i++;
                                                                             printf("Soy el numero 50, mi PID es: %d\n", getpid());                                                          //NUMERO 50
                                                                             pids[i] = fork();
-                                                                            matar_proceso(pid[i]);
+                                                                            
                                                                             switch (pids[i]) {
                                                                                 
                                                                                 case -1: perror("Error en el noveno fork"); exit(1);
                                                                                 case 0:i++;
                                                                                     printf("Soy el numero 54, mi PID es: %d\n", getpid());                                                          //NUMERO 54
                                                                                     pids[i] = fork();
-                                                                                    matar_proceso(pid[i]);
+                                                                                    
                                                                                     switch (pids[i]) {
                                                                                         
                                                                                         case -1: perror("Error en el décimo fork"); exit(1);
                                                                                         case 0:i++;
                                                                                             printf("Soy el numero 56, mi PID es: %d\n", getpid());                                                          //NUMERO 56
                                                                                             pids[i] = fork();
-                                                                                            matar_proceso(pid[i]);
+                                                                                            
                                                                                             switch (pids[i]) {
                                                                                                 
                                                                                                 case -1: perror("Error en el undécimo fork"); exit(1);
                                                                                                 case 0:i++;
                                                                                                         printf("Soy el numero 57, mi PID es: %d\n", getpid());                                                          //NUMERO 57
                                                                                                         pids[i] = fork();
-                                                                                                        matar_proceso(pid[i]);
+                                                                                                        
                                                                                                         switch (pids[i]) {
                                                                                                             
                                                                                                             case -1: perror("Error en el dodiciésimo fork"); exit(1);
@@ -100,37 +100,37 @@ int main() {
                                                                                                                     pause();
                                                                                                                     exit(0);
                                                                                                             default: 
-                                                                                                                pause();
+                                                                                                                wait(NULL);
                                                                                                                 //printf("Soy el padre numero 57, mi PID es: %d\n\n", getpid());
                                                                                                         }
                                                                                                           
                                                                                                         exit(0);
                                                                                                 default: 
-                                                                                                    pause();
+                                                                                                    wait(NULL);
                                                                                                     //printf("Soy el padre numero 56, mi PID es: %d\n\n", getpid());
                                                                                             }
                                                                                               
                                                                                             exit(0);
                                                                                         default: 
-                                                                                            pause();
+                                                                                            wait(NULL);
                                                                                             //printf("Soy el padre numero 54, mi PID es: %d\n\n", getpid());
                                                                                     }
                                                                                       
                                                                                     exit(0);
                                                                                 default: 
-                                                                                    pause();
+                                                                                    wait(NULL);
                                                                                     //printf("Soy el padre numero 50, mi PID es: %d\n\n", getpid());
                                                                             }
                                                                               
                                                                             exit(0);
                                                                     default: 
-                                                                        pause();
+                                                                        wait(NULL);
                                                                         //printf("Soy el padre numero 46, mi PID es: %d\n\n", getpid());
                                                                 }
                                                                   
                                                                 exit(0);
                                                         default: 
-                                                            pause();
+                                                            wait(NULL);
                                                             //printf("Soy el padre numero 42, mi PID es: %d\n\n", getpid());
                                                     }
                                                       
@@ -163,23 +163,23 @@ int main() {
                                                                                 pause();
                                                                                 exit(0);
                                                                             default:
-                                                                                pause();
+                                                                                wait(NULL);
                                                                                 //printf("Soy el padre numero 47, mi PID es %d\n\n",getpid());
                                                                         }
                                                                           
                                                                         exit(0);
                                                                     default:
-                                                                        pause();
+                                                                        wait(NULL);
                                                                         //printf("Soy el padre numero 43, mi pid es %d\n\n",getpid());
 
                                                                 }
                                                                   
                                                                 exit(0);
                                                         default: 
-                                                            pause();
+                                                            wait(NULL);
                                                             //printf("Soy el padre numero 40, mi PID es: %d\n\n", getpid());
                                                     }
-                                                    pause();
+                                                    wait(NULL);
 
                                             }
                                           
@@ -221,19 +221,19 @@ int main() {
                                                                                             pause();
                                                                                             exit(0);
                                                                                         default: 
-                                                                                            pause();
+                                                                                            wait(NULL);
                                                                                             //printf("Soy el padre numero 52, mi PID es %d\n\n",getpid());
                                                                                     }
                                                                                       
                                                                                     exit(0);
                                                                                 default:
-                                                                                    pause();
+                                                                                    wait(NULL);
                                                                                     //printf("Soy el padre numero 48, mi PID es %d\n\n",getpid());
                                                                             }
                                                                               
                                                                             exit(0);
                                                                     default:
-                                                                            pause();
+                                                                            wait(NULL);
                                                                             //printf("Soy el padre numero 44, mi PID es %d\n\n",getpid());
                                                                 }
                                                                   
@@ -261,35 +261,36 @@ int main() {
                                                                                         pause();
                                                                                         exit(0);
                                                                                     default:
-                                                                                        pause();
+                                                                                        wait(NULL);
                                                                                         //printf("Soy el padre numero 49, mi PID es %d\n\n",getpid());
                                                                                 }
                                                                                   
                                                                                 exit(0);
                                                                             default:
-                                                                                pause();
+                                                                                wait(NULL);
                                                                                 //printf("Soy el padre numero 45, mi PID es %d\n\n",getpid());
                                                                         }
                                                                           
                                                                         exit(0);
                                                                 default:
-                                                                        pause();
+                                                                        wait(NULL);
                                                                         //printf("Soy el padre numero 41, mi PID es %d\n\n",getpid());
                                                             }
                                                     }
                                                       
                                                     exit(0);
                                             default: 
-                                            pause();
+                                            wait(NULL);
                                             //printf("Soy el padre numero 39, mi PID es: %d\n\n", getpid());
                                         }
-                                        pause();
+                                       
+                                        wait(NULL);
                                          
                             }
                               
                             exit(0);
                     default: 
-                    pause();
+                    wait(NULL);
                     printf("\n"); 
                 }
                   
@@ -297,8 +298,13 @@ int main() {
         default: 
             
             printf("Soy el numero 37, mi PID es: %d\n\n", getpid()); 
-            matar_proceso(pid[i])
             //RAIZ 37
     }
+    pause();
+    printf("Proceso raíz enviando SIGTERM a todos los hijos\n");
+    kill(0, SIGTERM);  // Enviar SIGTERM a todos los procesos en el grupo
+    while (wait(NULL) > 0);  // Esperar a todos los hijos
+    printf("Proceso raíz terminado\n");
     return 0;
 }
+
