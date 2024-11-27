@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 #define NUM_PROCESOS 22 // Número total de procesos en el árbol
-
+int i=0;
 typedef struct {
     pid_t pid;
     pid_t ppid;
@@ -16,20 +16,13 @@ struct_pid pid[NUM_PROCESOS];
 void propagar_SIGTERM(pid_t padre);
 void manejador_SIGTERM(int sig) {
     printf("Proceso %d recibió SIGTERM\n", getpid());
-    propagar_SIGTERM(getpid()); // Propagar la señal a los descendientes
+    if(pid[i].sig != 0){
+        kill(pid[i].sig, SIGTERM);
+    }
+    i++;
     exit(0); // Finalizar el proceso
 }
 
-// Función recursiva para propagar SIGTERM
-void propagar_SIGTERM(pid_t padre) {
-    int i;
-    for ( i = 0; i < NUM_PROCESOS; i++) {
-        if (pid[i].ppid == padre) { // Si es hijo del proceso actual
-            kill(pid[i].pid, SIGTERM); // Enviar SIGTERM al hijo
-            propagar_SIGTERM(pid[i].pid); // Recursión para los descendientes
-        }
-    }
-}
 
 // Función para crear un nuevo proceso
 
@@ -44,6 +37,7 @@ int crearArbol(){
     case 0: i++;
             pid[i].pid = getpid();
             pid[i].ppid = getppid();
+            pid[i].sig = pid[i+1].pid;
             //configurar_manejador();   
             printf("Soy el numero 38, mi PID es: %d\n", getpid());                                                             //NUMERO38
             pids[i] = fork();
@@ -54,6 +48,7 @@ int crearArbol(){
                         i++;
                         pid[i].pid = getpid();
                         pid[i].ppid = getppid();
+                        pid[i].sig = pid[i+1].pid;
                         //configurar_manejador();
                         printf("Soy el numero 39, mi PID es: %d\n", getpid());                                                             //NUMERO39
                         pids[i] = fork();
@@ -66,6 +61,7 @@ int crearArbol(){
                                     i++;  
                                     pid[i].pid = getpid();
                                     pid[i].ppid = getppid();
+                                    pid[i].sig = pid[i+1].pid;
                                     printf("Soy el numero 40, mi PID es: %d\n", getpid());                                                             //NUMERO40
                                     pids[i] = fork();
                                     
@@ -77,6 +73,7 @@ int crearArbol(){
                                                 i++;
                                                 pid[i].pid = getpid();
                                                 pid[i].ppid = getppid();
+                                                pid[i].sig = pid[i+1].pid;
                                                 printf("Soy el numero 42, mi PID es: %d\n", getpid());                                                              //NUMERO 42
                                                 pids[i] = fork();
                                                 
@@ -88,6 +85,7 @@ int crearArbol(){
                                                             i++;
                                                             pid[i].pid = getpid();
                                                             pid[i].ppid = getppid();
+                                                            pid[i].sig = pid[i+1].pid;
                                                             printf("Soy el numero 46, mi PID es: %d\n", getpid());                                                          //NUMERO 46
                                                             pids[i] = fork();
                                                             
@@ -99,6 +97,7 @@ int crearArbol(){
                                                                         i++;
                                                                         pid[i].pid = getpid();
                                                                         pid[i].ppid = getppid();
+                                                                        pid[i].sig = pid[i+1].pid;
                                                                         printf("Soy el numero 50, mi PID es: %d\n", getpid());                                                          //NUMERO 50
                                                                         pids[i] = fork();
                                                                         
@@ -110,6 +109,7 @@ int crearArbol(){
                                                                                 i++;
                                                                                 pid[i].pid = getpid();
                                                                                 pid[i].ppid = getppid();
+                                                                                pid[i].sig = pid[i+1].pid;
                                                                                 printf("Soy el numero 54, mi PID es: %d\n", getpid());                                                          //NUMERO 54
                                                                                 pids[i] = fork();
                                                                                 
@@ -122,6 +122,7 @@ int crearArbol(){
                                                                                         i++;
                                                                                         pid[i].pid = getpid();
                                                                                         pid[i].ppid = getppid();
+                                                                                        pid[i].sig = pid[i+1].pid;
                                                                                         printf("Soy el numero 56, mi PID es: %d\n", getpid());                                                          //NUMERO 56
                                                                                         pids[i] = fork();
                                                                                         
@@ -133,6 +134,7 @@ int crearArbol(){
                                                                                                     i++;
                                                                                                     pid[i].pid = getpid();
                                                                                                     pid[i].ppid = getppid();
+                                                                                                    pid[i].sig = pid[i+1].pid;
                                                                                                     printf("Soy el numero 57, mi PID es: %d\n", getpid());                                                          //NUMERO 57
                                                                                                     pids[i] = fork();
                                                                                                     
@@ -144,7 +146,7 @@ int crearArbol(){
                                                                                                                 i++;   
                                                                                                                 pid[i].pid = getpid();
                                                                                                                 pid[i].ppid = getppid();
-                                                                                                                pid[i].sig = 1;
+                                                                                                                pid[i].sig = pid[i+1].pid;
                                                                                                                                                                                                             
                                                                                                                 printf("Soy el numero 58, mi PID es: %d\n", getpid());                                                          //NUMERO 58
                                                                                                                 
@@ -204,6 +206,7 @@ int crearArbol(){
                                                             i++;
                                                             pid[i].pid = getpid();
                                                             pid[i].ppid = getppid();
+                                                            pid[i].sig = pid[i+1].pid;
                                                             printf("Soy el numero 43, mi PID es: %d\n", getpid());                                                  //NUMERO 43
                                                             pids[i] = fork();
                                                             switch(pids[i]){ 
@@ -216,6 +219,7 @@ int crearArbol(){
                                                                     i++;
                                                                     pid[i].pid = getpid();
                                                                     pid[i].ppid = getppid();
+                                                                    pid[i].sig = pid[i+1].pid;
                                                                     printf("Soy el numero 47, mi PID es %d\n",getpid());                                                  //NUMERO 47
                                                                     pids[i] = fork();
                                                                     switch(pids[i]){
@@ -228,7 +232,7 @@ int crearArbol(){
                                                                             i++;
                                                                             pid[i].pid = getpid();
                                                                             pid[i].ppid = getppid();
-                                                                            pid[i].sig = 2;
+                                                                            pid[i].sig = pid[i+1].pid;
                                                                             printf("Soy el numero 51, mi PID es %d\n",getpid());                                                  //NUMERO 51
                                                                             
                                                                         
@@ -272,6 +276,7 @@ int crearArbol(){
                                                 i++;
                                                 pid[i].pid = getpid();
                                                 pid[i].ppid = getppid();
+                                                pid[i].sig = pid[i+1].pid;
                                                 printf("Soy el numero 41, mi PID es: %d\n", getpid());                                                  //NUMERO 41
                                                 pids[i] = fork();
                                                 switch(pids[i]){
@@ -282,6 +287,7 @@ int crearArbol(){
                                                             i++;
                                                             pid[i].pid = getpid();
                                                             pid[i].ppid = getppid();
+                                                            pid[i].sig = pid[i+1].pid;
                                                             printf("Soy el numero 44, mi PID es %d\n",getpid());                                                  //NUMERO 44
                                                             pids[i] = fork();
                                                             switch(pids[i]){    
@@ -291,6 +297,7 @@ int crearArbol(){
                                                                         i++;
                                                                         pid[i].pid = getpid();
                                                                         pid[i].ppid = getppid();
+                                                                        pid[i].sig = pid[i+1].pid;
                                                                         printf("Soy el numero 48, mi PID es %d\n",getpid());                                                  //NUMERO 48
                                                                         pids[i] = fork();
                                                                         switch(pids[i]){
@@ -301,6 +308,7 @@ int crearArbol(){
                                                                                 i++;
                                                                                 pid[i].pid = getpid();
                                                                                 pid[i].ppid = getppid();
+                                                                                pid[i].sig = pid[i+1].pid;
                                                                                 printf("Soy el numero 52, mi PID es %d\n",getpid());                                                  //NUMERO 52
                                                                                 pids[i] = fork();
                                                                                 switch(pids[i]){
@@ -311,7 +319,7 @@ int crearArbol(){
                                                                                         i++;
                                                                                         pid[i].pid = getpid();
                                                                                         pid[i].ppid = getppid();
-                                                                                        pid[i].sig = 3;
+                                                                                        pid[i].sig = pid[i+1].pid;
                                                                                         printf("Soy el numero 55, mi PID es %d\n",getpid());                                                  //NUMERO 55
                                                                                         
                                                                                         pause();
@@ -348,6 +356,7 @@ int crearArbol(){
                                                                     i++;
                                                                     pid[i].pid = getpid();
                                                                     pid[i].ppid = getppid();
+                                                                    pid[i].sig = pid[i+1].pid;
                                                                     printf("Soy el numero 45, mi PID es %d\n",getpid());                                                  //NUMERO 45
                                                                     pids[i] = fork();
                                                                     switch(pids[i]){
@@ -358,6 +367,7 @@ int crearArbol(){
                                                                             i++;
                                                                             pid[i].pid = getpid();
                                                                             pid[i].ppid = getppid();
+                                                                            pid[i].sig = pid[i+1].pid;
                                                                             printf("Soy el numero 49, mi PID es %d\n",getpid());
                                                                             pids[i] = fork();
                                                                             switch(pids[i]){
@@ -368,7 +378,7 @@ int crearArbol(){
                                                                                     i++;
                                                                                     pid[i].pid = getpid();
                                                                                     pid[i].ppid = getppid();
-                                                                                    pid[i].sig = 4;
+                                                                                    pid[i].sig = 0;
 
                                                                                     printf("Soy el numero 53, mi PID es %d\n",getpid());
                                                                                     
