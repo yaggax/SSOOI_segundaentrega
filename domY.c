@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 #define NUM_PROCESOS 22 // Número total de procesos en el árbol
 int i=-1;
@@ -17,10 +18,10 @@ int crearArbol();
 
 
 void manejador_SIGTERM(int sig) {
-    i++;    
+    int i;    
     printf("Proceso %d recibió SIGTERM\n", pid[i].pid);
-    if(pid[i].sig != 0){
-        kill(pid[i].sig, SIGTERM);
+    for(i=0;i<=NUM_PROCESOS;i++){
+        if(kill(pid[i].pid,SIGTERM)==-1) perror("Enviandolo al siguiente hijo");
     }
     
     exit(0); // Finalizar el proceso
@@ -31,24 +32,47 @@ void manejador_SIGTERM(int sig) {
 
 
 int main() {
+    sigset_t conj_vacio, conj_SIGTERM;
+  sigfillset(&conj_vacio);
+    
+    if(sigprocmask( SIG_BLOCK, &conj_vacio, NULL) == -1){
+        perror("Error config mascara");
+        exit(-1);
+        
+    } 
    struct sigaction sa;
     sa.sa_handler = manejador_SIGTERM;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
     
     
+    char *filename="fichero.txt";
+    int fd = open(filename, O_CREAT | O_RDWR);
+    if(fd==-1){
+        printf("Error en la creacion/apertura del fichero");
+    }
+
+    
     crearArbol();
     sigaction(SIGTERM,&sa,NULL);
 
     
     printf("Enviando SIGTERM desde la raíz (37)...\n");
+    kill(pid[i].ppid,SIGTERM);
 
     return 0;
 }
 
 
 int crearArbol(){
-  
+    sigset_t conj_vacio, conj_SIGTERM;
+  sigfillset(&conj_vacio);
+    
+    if(sigprocmask( SIG_BLOCK, &conj_vacio, NULL) == -1){
+        perror("Error config mascara");
+        exit(-1);
+        
+    } 
   pid_t pids[NUM_PROCESOS];
   int i = 0;
   pids[i] = fork();
@@ -167,7 +191,9 @@ int crearArbol(){
                                                                                                                 pid[i].pid = getpid();
                                                                                                                 pid[i].ppid = getppid();
                                                                                                                 pid[i].sig = pid[i+1].pid;
-                                                                                                                                                                                                            
+                                                                                                                sigemptyset(&conj_vacio);
+                                                                                                                sigaddset(&conj_vacio, SIGTERM);
+                                                                                                                sigsuspend(&conj_vacio);                                                                                           
                                                                                                                 printf("Soy el numero 58, mi PID es: %d\n", getpid());                                                          //NUMERO 58
                                                                                                                 
                                                                                                                 
@@ -253,7 +279,11 @@ int crearArbol(){
                                                                             pid[i].pid = getpid();
                                                                             pid[i].ppid = getppid();
                                                                             pid[i].sig = pid[i+1].pid;
-                                                                            printf("Soy el numero 51, mi PID es %d\n",getpid());                                                  //NUMERO 51
+                                                                            printf("Soy el numero 51, mi PID es %d\n",getpid());     
+                                                                            
+                                                                            sigemptyset(&conj_vacio);
+                                                                            sigaddset(&conj_vacio, SIGTERM);
+                                                                            sigsuspend(&conj_vacio);//NUMERO 51
                                                                             
                                                                         
 
@@ -341,6 +371,9 @@ int crearArbol(){
                                                                                         pid[i].sig = pid[i+1].pid;
                                                                                         printf("Soy el numero 55, mi PID es %d\n",getpid());                                                  //NUMERO 55
                                                                                         
+                                                                                        sigemptyset(&conj_vacio);
+                                                                                        sigaddset(&conj_vacio, SIGTERM);
+                                                                                        sigsuspend(&conj_vacio);
                                                                                         exit(0);
                                                                                     default: 
                                                                                         wait(NULL);
@@ -399,6 +432,7 @@ int crearArbol(){
                                                                                     pid[i].sig = 0;
 
                                                                                     printf("Soy el numero 53, mi PID es %d\n",getpid());
+                                                                                    sigsuspend(&conj_SIGTERM);
                                                                                     
                                                                                     exit(0);
                                                                                 default:
@@ -454,422 +488,3 @@ int crearArbol(){
   return 0;   
 }
 
-
-// int crearArbol(){
-//   struct_pid pids[NUM_PROCESOS];
-//   pid_t pid[NUM_PROCESOS];
-//   int cont = 0;
-//   switch(pid[cont] = fork()){
-//     case -1:
-//       printf("Error en fork\n");
-//       exit(1);
-// //38
-//     case 0:
-//       printf("Proceso hijo %d\n", getpid());
-//       pids[cont].pid = getpid();
-//       pids[cont].ppid = getppid();
-//       //pids[cont].sig = pid;
-//       cont++;
-//       switch(pid[cont] = fork()){
-//         case -1:
-//           printf("Error en fork\n");
-//           exit(1);
-// //39
-//         case 0:
-//           printf("Proceso hijo %d\n", getpid());
-//           pids[cont].pid = getpid();
-//           pids[cont].ppid = getppid();
-//           //pids[cont].sig = pid;
-//           cont++;
-//           switch(pid[cont] = fork()){
-//             case -1:
-//               printf("Error en fork\n");
-//               exit(1);
-//  //40
-//             case 0:
-//               printf("Proceso hijo %d\n", getpid());
-//               pids[cont].pid = getpid();
-//               pids[cont].ppid = getppid();
-//               //pids[cont].sig = pid;
-//               cont++;
-//               switch(pid[cont] = fork()){
-//                 case -1:
-//                   printf("Error en fork\n");
-//                   exit(1);
-//   //40
-//                 case 0:
-//                   printf("Proceso hijo %d\n", getpid());
-//                   pids[cont].pid = getpid();
-//                   pids[cont].ppid = getppid();
-//                   //pids[cont].sig = pid;
-//                   cont++;
-//                   switch(pid[cont] = fork()){
-//                     case -1:
-//                       printf("Error en fork\n");
-//                       exit(1);
-//    //42
-//                     case 0:
-//                       printf("Proceso hijo %d\n", getpid());
-//                       pids[cont].pid = getpid();
-//                       pids[cont].ppid = getppid();
-//                       //pids[cont].sig = pid;
-//                       cont++;
-//                       switch(pid[cont] = fork()){
-//                         case -1:
-//                           printf("Error en fork\n");
-//                           exit(1);
-//    //46
-//                         case 0:
-//                           printf("Proceso hijo %d\n", getpid());
-//                           pids[cont].pid = getpid();
-//                           pids[cont].ppid = getppid();
-//                           //pids[cont].sig = pid;
-//                           cont++;
-//                           switch(pid[cont] = fork()){
-//                             case -1:
-//                               printf("Error en fork\n");
-//                               exit(1);
-//     //50
-//                             case 0:
-//                               printf("Proceso hijo %d\n", getpid());
-//                               pids[cont].pid = getpid();
-//                               pids[cont].ppid = getppid();
-//                               //pids[cont].sig = pid;
-//                               cont++;
-//                               switch(pid[cont] = fork()){
-//                                 case -1:
-//                                   printf("Error en fork\n");
-//                                   exit(1);  
-//      //54
-//                                 case 0:
-//                                   printf("Proceso hijo %d\n", getpid());
-//                                   pids[cont].pid = getpid();
-//                                   pids[cont].ppid = getppid();
-//                                   //pids[cont].sig = pid;
-//                                   cont++;
-//                                   switch(pid[cont] = fork()){
-//                                     case -1:
-//                                       printf("Error en fork\n");
-//                                       exit(1);
-//       //56
-//                                     case 0:
-//                                       printf("Proceso hijo %d\n", getpid());
-//                                       pids[cont].pid = getpid();
-//                                       pids[cont].ppid = getppid();
-//                                       //pids[cont].sig = pid;
-//                                       cont++;
-//                                       switch(pid[cont] = fork()){
-//                                         case -1:
-//                                           printf("Error en fork\n");
-//                                           exit(1);
-//        //58
-//                                         case 0:
-//                                           printf("Proceso hijo %d\n", getpid());
-//                                           pids[cont].pid = getpid();
-//                                           pids[cont].ppid = getppid();
-//                                           pause();
-//                                           //pids[cont].sig = pid;
-//                                           cont++;
-//                                         default:
-//                                           printf("Proceso padre %d\n", getpid());
-//                                           pids[cont].pid = getpid();
-//                                           pids[cont].ppid = getppid();
-//                                           //pids[cont].sig = pid;
-//                                           cont++;
-//                                           pause();
-//                                       }
-//                                     default:
-//                                       printf("Proceso padre %d\n", getpid());
-//                                       pids[cont].pid = getpid();
-//                                       pids[cont].ppid = getppid();
-//                                       //pids[cont].sig = pid; 
-//                                       cont++;
-//                                       pause();
-//                                   }
-//                                 default:
-//                                   printf("Proceso padre %d\n", getpid());
-//                                   pids[cont].pid = getpid();
-//                                   pids[cont].ppid = getppid();
-//                                   //pids[cont].sig = pid;
-//                                   cont++;
-//                                   pause();
-//                               }
-//                             default:
-//                               printf("Proceso padre %d\n", getpid());
-//                               pids[cont].pid = getpid();
-//                               pids[cont].ppid = getppid();
-//                               //pids[cont].sig = pid;  
-//                               cont++;
-//                               pause();
-//                           }
-//                         default:
-//                           pids[cont].pid = getpid();
-//                           pids[cont].ppid = getppid();
-//                           //pids[cont].sig = pid;
-//                           cont++;
-//                           printf("Proceso padre %d\n", getpid());
-//                           pause();
-
-//                   }
-//                   default:
-//                     pids[cont].pid = getpid();
-//                     pids[cont].ppid = getppid();
-//                     //pids[cont].sig = pid;
-//                     cont++;
-//                     printf("Proceso padre %d\n", getpid());
-//                     pause();
-//                     switch(pid[cont] = fork()){
-//                       case -1:
-//                         printf("Error en fork\n");
-//                         exit(1);
-//    //43
-//                       case 0:
-//                         printf("Proceso hijo %d\n", getpid());
-//                         pids[cont].pid = getpid();
-//                         pids[cont].ppid = getppid();
-//                         //pids[cont].sig = pid;
-//                         cont++;
-//                         switch(pid[cont] = fork()){
-//                           case -1:
-//                             printf("Error en fork\n");
-//                             exit(1);
-//    //47                          
-//                           case 0:
-//                             printf("Proceso hijo %d\n", getpid());
-//                             pids[cont].pid = getpid();
-//                             pids[cont].ppid = getppid();
-//                             //pids[cont].sig = pid;
-//                             cont++;
-//                             switch(pid[cont] = fork()){
-//                               case -1:
-//                                 printf("Error en fork\n");
-//                                 exit(1);
-//     //51
-//                               case 0:
-//                                 printf("Proceso hijo %d\n", getpid());
-//                                 pids[cont].pid = getpid();
-//                                 pids[cont].ppid = getppid();
-//                                 //pids[cont].sig = pid;
-//                                 cont++;
-//                                 pause();
-//                               default:
-//                                 pids[cont].pid = getpid();
-//                                 pids[cont].ppid = getppid();
-//                                 //pids[cont].sig = pid;
-//                                 cont++;
-//                                 printf("Proceso padre %d\n", getpid());
-//                                 pause();
-//                             }
-//                           default:
-//                             pids[cont].pid = getpid();
-//                             pids[cont].ppid = getppid();
-//                             //pids[cont].sig = pid;
-//                             cont++;
-//                             printf("Proceso padre %d\n", getpid());
-//                             pause();
-//                         }
-//                       default:
-//                         pids[cont].pid = getpid();
-//                         pids[cont].ppid = getppid();
-//                         //pids[cont].sig = pid;
-//                         cont++;
-//                         printf("Proceso padre %d\n", getpid());
-//                         pause();
-//                   }
-//               }
-
-//               switch(pid[cont] = fork()){
-//                 case -1:
-//                   printf("Error en fork\n");
-//                   exit(1);
-//   //41
-//                 case 0:
-//                   printf("Proceso hijo %d\n", getpid());
-//                   pids[cont].pid = getpid();
-//                   pids[cont].ppid = getppid();
-//                   //pids[cont].sig = pid;
-//                   cont++;
-//                   switch(pid[cont] = fork()){
-//                     case -1:
-//                       printf("Error en fork\n");
-//                       exit(1);
-//   //44
-//                     case 0:
-//                       printf("Proceso hijo %d\n", getpid());
-//                       pids[cont].pid = getpid();
-//                       pids[cont].ppid = getppid();
-//                       //pids[cont].sig = pid;
-//                       cont++;
-//                       switch(pid[cont] = fork()){
-//                         case -1:
-//                           printf("Error en fork\n");
-//                           exit(1);
-//    //48
-//                         case 0:
-//                           printf("Proceso hijo %d\n", getpid());
-//                           pids[cont].pid = getpid();
-//                           pids[cont].ppid = getppid();
-//                           //pids[cont].sig = pid;
-//                           cont++;
-//                           switch(pid[cont] = fork()){
-//                             case -1:
-//                               printf("Error en fork\n");
-//                               exit(1);
-//     //52
-//                             case 0:
-//                               printf("Proceso hijo %d\n", getpid());
-//                               pids[cont].pid = getpid();
-//                               pids[cont].ppid = getppid();
-//                               //pids[cont].sig = pid;
-//                               cont++;
-//                               switch(pid[cont] = fork()){
-//                                 case -1:
-//                                   printf("Error en fork\n");
-//                                   exit(1);
-//      //55
-//                                 case 0:
-//                                   printf("Proceso hijo %d\n", getpid());
-//                                   pids[cont].pid = getpid();
-//                                   pids[cont].ppid = getppid();
-//                                   //pids[cont].sig = pid;
-//                                   cont++;
-//                                   pause();
-//                                 default:
-//                                   pids[cont].pid = getpid();
-//                                   pids[cont].ppid = getppid();
-//                                   //pids[cont].sig = pid;
-//                                   cont++;
-//                                   printf("Proceso padre %d\n", getpid());
-//                                   pause();
-//                               }
-//                             default:
-//                               pids[cont].pid = getpid();
-//                               pids[cont].ppid = getppid();
-//                               //pids[cont].sig = pid;
-//                               cont++;
-//                               printf("Proceso padre %d\n", getpid());
-//                               pause();
-//                           }
-//                         default:
-//                           pids[cont].pid = getpid();
-//                           pids[cont].ppid = getppid();
-//                           //pids[cont].sig = pid;
-//                           cont++;
-//                           printf("Proceso padre %d\n", getpid());
-//                           pause();
-//                       }
-                        
-//                     default:
-//                       pids[cont].pid = getpid();
-//                       pids[cont].ppid = getppid();
-//                       //pids[cont].sig = pid;
-//                       cont++;
-//                       printf("Proceso padre %d\n", getpid());
-//                       switch(pid[cont] = fork()){
-//                         case -1:
-//                           printf("Error en fork\n");
-//                           exit(1);
-//   //45                          
-//                         case 0:
-//                           printf("Proceso hijo %d\n", getpid());
-//                           pids[cont].pid = getpid();
-//                           pids[cont].ppid = getppid();
-//                           //pids[cont].sig = pid;
-//                           cont++;
-//                           switch(pid[cont] = fork()){
-//                             case -1:
-//                               printf("Error en fork\n");
-//                               exit(1);
-//    //49
-//                             case 0:
-//                               printf("Proceso hijo %d\n", getpid());
-//                               pids[cont].pid = getpid();
-//                               pids[cont].ppid = getppid();
-//                               //pids[cont].sig = pid;
-//                               cont++;
-//                               switch(pid[cont] = fork()){
-//                                 case -1:
-//                                   printf("Error en fork\n");
-//                                   exit(1);
-                                  
-//     //53
-//                                 case 0:
-//                                   printf("Proceso hijo %d\n", getpid());
-//                                   pids[cont].pid = getpid();
-//                                   pids[cont].ppid = getppid();
-//                                   //pids[cont].sig = pid;
-//                                   cont++;
-//                                   pause();
-//                                 default:
-//                                   pids[cont].pid = getpid();
-//                                   pids[cont].ppid = getppid();
-//                                   //pids[cont].sig = pid;
-//                                   cont++;
-//                                   printf("Proceso padre %d\n", getpid());
-//                                   pause();
-//                               }
-//                             default:
-//                               pids[cont].pid = getpid();
-//                               pids[cont].ppid = getppid();
-//                               //pids[cont].sig = pid;
-//                               cont++;
-//                               printf("Proceso padre %d\n", getpid());
-//                               pause();
-//                           }
-//                         default:
-//                           pids[cont].pid = getpid();
-//                           pids[cont].ppid = getppid();
-//                           //pids[cont].sig = pid;
-//                           cont++;
-//                           printf("Proceso padre %d\n", getpid());
-//                           pause();
-//                       }
-//                       pause();
-//                   }
-//                 default:
-//                   pids[cont].pid = getpid();
-//                   pids[cont].ppid = getppid();
-//                   //pids[cont].sig = pid;
-//                   cont++;
-//                   printf("Proceso padre %d\n", getpid());
-//                   pause();
-                  
-//               }
-//              default:
-//               pids[cont].pid = getpid();
-//               pids[cont].ppid = getppid();
-//               //pids[cont].sig = pid;
-//               cont++;
-//               printf("Proceso padre %d\n", getpid());
-//               pause();
-//           }
-//         default://39
-//           pids[cont].pid = getpid();
-//           pids[cont].ppid = getppid();
-//           //pids[cont].sig = pid; 
-//           cont++;
-//           printf("Proceso padre %d\n", getpid());
-//           pause();
-          
-//       }
-//       exit(0);
-//     default://38
-//       pids[cont].pid = getpid();
-//       pids[cont].ppid = getppid();
-//       //pids[cont].sig = pid;
-//       cont++;
-//       printf("Proceso padre %d\n", getpid());
-//       pause();
-      
-//     }
-//     default: //37
-//       pids[cont].pid = getpid();
-//       pids[cont].ppid = getppid();
-//       //pids[cont].sig = pid;
-//       cont++;
-//       printf("Proceso padre %d\n", getpid());
-//       pause();
-//   }
-//   return 0;
-
-// }
