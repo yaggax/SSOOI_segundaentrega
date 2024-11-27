@@ -22,9 +22,8 @@ int main() {
 void manejadora(int sig, pid_t *pids) {
     printf("Manejador recibido señal %d\n", sig);
     int i;
-    for(i = 0; i < 22; i++) {
-        printf("Matando proceso %d\n", pids[i]);
-        kill(pids[i], SIGTERM);
+    while(getpid()>0) {
+        kill(getpid(), SIGTERM);
     }
     exit(0);
 }
