@@ -6,9 +6,9 @@
 
 void configurar_manejador_SIGTERM();
 
-void configurar_manejador_SIGTERM(void) {
+void configurar_manejador_SIGTERM() {
     struct sigaction sa;
-    sa.sa_handler = manejador_SIGTERM;  // Asignar el manejador
+    //sa.sa_handler = manejador_SIGTERM;  // Asignar el manejador
     sigemptyset(&sa.sa_mask);          // No bloquear señales
     sa.sa_flags = 0;                   // Sin flags adicionales
     if (sigaction(SIGTERM, &sa, NULL) == -1) {
@@ -20,14 +20,14 @@ void configurar_manejador_SIGTERM(void) {
 int main() {
     
     pid_t pids[22];
-    configurar_manejador_SIGTERM();
+    //configurar_manejador_SIGTERM();
 
     pids[0] = fork(); 
     switch (pids[0]) {
         case -1: perror("Error en el primer fork"); exit(1);
         case 0: 
                 printf("Soy el numero 38, mi PID es: %d\n", getpid());                                                             //NUMERO38
-                configurar_manejador_SIGTERM();
+                //configurar_manejador_SIGTERM();
                 pids[1] = fork();                
                 switch (pids[1]) {
                     case -1: perror("Error en el segundo fork"); exit(1);
@@ -254,5 +254,7 @@ int main() {
             
             printf("Soy el numero 37, mi PID es: %d\n\n", getpid());                                                             //RAIZ 37
     }
+
+    
     return 0;
 }
