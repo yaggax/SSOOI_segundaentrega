@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 #define NUM_PROCESOS 22 // Número total de procesos en el árbol
-int i=0;
+int i=-1;
 typedef struct {
     pid_t pid;
     pid_t ppid;
@@ -13,18 +13,38 @@ typedef struct {
 } struct_pid;
 
 struct_pid pid[NUM_PROCESOS];
-void propagar_SIGTERM(pid_t padre);
+int crearArbol();
+
+
 void manejador_SIGTERM(int sig) {
-    printf("Proceso %d recibió SIGTERM\n", getpid());
+    i++;    
+    printf("Proceso %d recibió SIGTERM\n", pid[i].pid);
     if(pid[i].sig != 0){
         kill(pid[i].sig, SIGTERM);
     }
-    i++;
+    
     exit(0); // Finalizar el proceso
 }
 
 
-// Función para crear un nuevo proceso
+
+
+
+int main() {
+   struct sigaction sa;
+    sa.sa_handler = manejador_SIGTERM;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    
+    
+    crearArbol();
+    sigaction(SIGTERM,&sa,NULL);
+
+    
+    printf("Enviando SIGTERM desde la raíz (37)...\n");
+
+    return 0;
+}
 
 
 int crearArbol(){
@@ -150,7 +170,7 @@ int crearArbol(){
                                                                                                                                                                                                             
                                                                                                                 printf("Soy el numero 58, mi PID es: %d\n", getpid());                                                          //NUMERO 58
                                                                                                                 
-                                                                                                                pause();
+                                                                                                                
                                                                                                                 exit(0);
                                                                                                         default: 
                                                                                                             wait(NULL);
@@ -237,7 +257,6 @@ int crearArbol(){
                                                                             
                                                                         
 
-                                                                            pause();
                                                                             exit(0);
                                                                         default:
                                                                             wait(NULL);
@@ -322,7 +341,6 @@ int crearArbol(){
                                                                                         pid[i].sig = pid[i+1].pid;
                                                                                         printf("Soy el numero 55, mi PID es %d\n",getpid());                                                  //NUMERO 55
                                                                                         
-                                                                                        pause();
                                                                                         exit(0);
                                                                                     default: 
                                                                                         wait(NULL);
@@ -382,7 +400,6 @@ int crearArbol(){
 
                                                                                     printf("Soy el numero 53, mi PID es %d\n",getpid());
                                                                                     
-                                                                                    pause();
                                                                                     exit(0);
                                                                                 default:
                                                                                     wait(NULL);
@@ -424,29 +441,18 @@ int crearArbol(){
               
             exit(0); 
     default: 
+        pid[i].pid = getpid();
+        pid[i].ppid = getppid();
+        pid[i].sig = pid[i+1].pid;        printf("Soy el numero 37, mi PID es: %d\n\n", getpid()); 
         wait(NULL);
         
-        printf("Soy el numero 37, mi PID es: %d\n\n", getpid()); 
+        
+          
         //RAIZ 37
   }
     
   return 0;   
 }
-
-int main() {
-    struct sigaction sa;
-    sa.sa_handler = manejador_SIGTERM;  // Manejador de señales
-    sigemptyset(&sa.sa_mask);  // No bloquear ninguna señal durante la ejecución del manejador
-    sa.sa_flags = 0;  // Sin flags especiales
-    crearArbol();
-
-    
-    sigaction(SIGTERM, &sa,NULL); 
-    printf("Enviando SIGTERM desde la raíz (37)...\n");
-
-    return 0;
-}
-
 
 
 // int crearArbol(){
